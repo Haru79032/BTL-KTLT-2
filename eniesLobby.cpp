@@ -23,6 +23,7 @@ BattleContext::BattleContext() {
 
 void BattleContext::nextTurn() {
     // TODO: implement
+    turnCount++;
 }
 
 /*
@@ -201,7 +202,7 @@ int Zoro::attack(Character* target, BattleContext& context) {
     // TODO: implement
     int damage = 0;
     if (getHpPercen() < 0.4) {
-        damage = ceil(ceil(atk+def*0.2)*1.15);
+        damage = ceil((atk+def*0.2)*1.15);
     }else{
         damage = ceil(atk+def*0.2);
     }
@@ -218,7 +219,7 @@ int Zoro::specialSkill(Character* target, BattleContext& context) {
     if (energy >= 15){
         int damage = 0;
         if (target->getHpPercen() < 0.5){
-            damage = ceil(ceil(atk*2.2)*1.5);
+            damage = ceil((atk*2.2)*1.5);
             if (!target->isAlive()){
                 context.updateMorale(4);
                 killsDuringTurn=true;
@@ -262,7 +263,7 @@ int Sanji::attack(Character* target, BattleContext& context) {
     if (target->getDef() >= def){
         damage = ceil(atk+speed*0.5);
     }else{
-        damage = ceil(ceil(atk+speed*0.5)*1.1);
+        damage = ceil((atk+speed*0.5)*1.1);
     }
     target->receiveDamage(damage);
     if (!target->isAlive()){
@@ -560,171 +561,307 @@ CP9Agent::CP9Agent() : Character() {
 }
 
 CP9Agent::CP9Agent(string name, int hp, int atk, int def,
-                   int speed, int energy, int doriki) {
+                   int speed, int energy, int doriki): Character(name, hp, atk, def, speed, energy), doriki(doriki) {
     // TODO: implement
 }
 
 bool CP9Agent::isCP9() const {
     // TODO: implement
+    return true;
 }
 
 string CP9Agent::str() const {
     // TODO: implement
-    return "";
+    stringstream ss;
+    ss << "CP9Agent [ name =" << name << ", hp = " << hp << ", atk = " << atk
+       << ", def = " << def << ", speed = " << speed
+       << ", energy = " << energy << ", doriki = " << doriki << " ]";
+    return ss.str();
 }
 
 /*
  * Lucci
  */
 Lucci::Lucci(string name, int hp, int atk, int def,
-             int speed, int energy, int doriki) {
+             int speed, int energy, int doriki): CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement
 }
 
 int Lucci::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage = atk + ceil(doriki/12.0f);
+    if (target->getHpPercen() < 0.5){
+        damage = ceil(damage*1.2);
+    }
+    target->receiveDamage(damage);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return damage;
 }
 
 int Lucci::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=0;
+    if (energy >= 25){
+        damage=ceil(atk*2.8);
+        float skillMultiplier=ceil((0.5f*target->getDef())/(damage*1.0f) + 1.0f);
+        damage=ceil(damage*skillMultiplier);
+        target->receiveDamage(damage);
+        energy=clamp(energy-25,0,100);
+        if (!target->isAlive()){
+            context.updateMorale(-15);
+        }
+    }
+    return damage;
 }
 
 void Lucci::endTurn(BattleContext& context) {
     // TODO: implement
+    if (getHpPercen() < 0.4){
+        atk=ceil(atk*1.05);
+    }
 }
 
 /*
  * Kaku
  */
 Kaku::Kaku(string name, int hp, int atk, int def,
-           int speed, int energy, int doriki) {
+           int speed, int energy, int doriki) : CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement
 }
 
 int Kaku::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=atk;
+    target->receiveDamage(damage);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return damage;
 }
 
 int Kaku::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
+    int damage1,damage2,damage3;
+    if (energy >=20){
+        damage1=ceil(atk*1.2);
+        damage2=ceil(atk);
+        damage3=ceil(atk*0.8);
+        target->receiveDamage(damage1);
+        if (!target->isAlive()){
+            context.updateMorale(-5);
+            return damage1;
+        }
+        target->receiveDamage(damage2);
+        if (!target->isAlive()){
+            context.updateMorale(-5);
+            return damage1+damage2;
+        }
+        target->receiveDamage(damage3);
+        if (!target->isAlive()){
+            context.updateMorale(-5);
+            return damage1+damage2+damage3;
+        }
+        energy = clamp(energy-20,0,100);
+    }
     return 0;
 }
 
 void Kaku::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
  * Jabra
  */
 Jabra::Jabra(string name, int hp, int atk, int def,
-             int speed, int energy, int doriki) {
+             int speed, int energy, int doriki): CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement
 }
 
 int Jabra::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    target->receiveDamage(atk);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return atk;
 }
 
 int Jabra::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=0;
+    if (energy>=18){
+        damage=ceil(atk*1.5);
+        if (getHpPercen() < 0.3){
+            damage=ceil(atk*1.5*1.25);
+        }
+        target->receiveDamage(damage);
+        if (!target->isAlive()){
+            context.updateMorale(-10);
+        }
+        energy = clamp(energy-18,0,100);
+    }
+    return damage;
 }
 
 void Jabra::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
  * Blueno
  */
 Blueno::Blueno(string name, int hp, int atk, int def,
-               int speed, int energy, int doriki) {
+               int speed, int energy, int doriki): CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement 
 }
 
 int Blueno::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    target->receiveDamage(atk);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return atk;
 }
 
 int Blueno::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=0;
+    if (energy >= 15){
+        damage=ceil(atk*1.3);
+        if (getHpPercen() > 0.5){
+            damage+=20;
+        }else{ damage+=40;}
+        target->receiveDamage(damage);
+        if (!target->isAlive()){
+            context.updateMorale(-5);
+        }
+        energy = clamp(energy-15,0,100);
+    }
+    return damage;
 }
 
 void Blueno::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
  * Kalifa
  */
 Kalifa::Kalifa(string name, int hp, int atk, int def,
-               int speed, int energy, int doriki) {
+               int speed, int energy, int doriki): CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement
 }
 
 int Kalifa::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    target->receiveDamage(atk);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return atk;
 }
 
 int Kalifa::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
+    int damage=0;
+    if (energy >= 18){
+        damage=ceil(atk*1.4);
+        target->receiveDamage(damage);
+        if (!target->isAlive()){
+            context.updateMorale(-5);
+        }
+        if (target->getName() == "Nami"){
+            context.updateMorale(-12);
+        }else context.updateMorale(-8);
+        target->setSpeed(target->getSpeed()-6);
+        energy = clamp(energy-18,0,100);
+    }
     return 0;
 }
 
 void Kalifa::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
  * Kumadori
  */
 Kumadori::Kumadori(string name, int hp, int atk, int def,
-                   int speed, int energy, int doriki) {
+                   int speed, int energy, int doriki): CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement
 }
 
 int Kumadori::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    target->receiveDamage(atk);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return atk;
 }
 
 int Kumadori::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=0;
+    if (energy >=16 ){
+        if (getHpPercen() < 0.4 ) damage=ceil(30 + doriki*0.1 + 25);
+        else damage=ceil(30 + doriki*0.1);
+        target->receiveDamage(damage);
+        if (!target->isAlive()){
+            context.updateMorale(-5);
+        }
+        energy = clamp(energy-16,0,100);
+    }
+    return damage;
 }
 
 void Kumadori::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
  * Fukurou
  */
 Fukurou::Fukurou(string name, int hp, int atk, int def,
-                 int speed, int energy, int doriki) {
+                 int speed, int energy, int doriki): CP9Agent(name, hp, atk, def, speed, energy, doriki) {
     // TODO: implement
 }
 
 int Fukurou::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    target->receiveDamage(atk);
+    if (!target->isAlive()){
+        context.updateMorale(-5);
+    }
+    return atk;
 }
 
 int Fukurou::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=0;
+    if (energy >= 14){
+        damage=ceil(atk*1.3);
+        target->receiveDamage(damage);
+        if (!target->isAlive()){
+            context.updateMorale(-11);
+        }
+        energy=clamp(energy-14,0,100);
+    }
+    return damage;
 }
 
 void Fukurou::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
