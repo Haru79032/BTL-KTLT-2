@@ -44,6 +44,7 @@ public:
     int getDef() const;
     int getSpeed() const;
     int getAtk() const;
+    int getMaxHp() const;
     float getHpPercen() const;
 
     virtual bool isStrawHat() const;
@@ -51,6 +52,9 @@ public:
 
     virtual string str() const = 0;
 
+    void setHp(int newHp){
+        hp=newHp;
+    }
     void setDef(int newDef){
         def=newDef;
     }
@@ -269,7 +273,7 @@ public:
     BattleContext();
     void nextTurn();
     void updateMorale(int change=5){
-        morale+=change;
+        morale = clamp(morale+change,0,100);
     }
 };
 

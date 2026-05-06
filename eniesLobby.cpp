@@ -109,6 +109,7 @@ float Character::getHpPercen() const {
     if (maxHp == 0) return 0.0f; // Avoid division by zero
     return static_cast<float>(hp) / maxHp;
 }
+int Character::getMaxHp() const{ return maxHp;}
 
 /*
  * StrawHat
@@ -324,7 +325,7 @@ int Nami::specialSkill(Character* target, BattleContext& context) {
     if (energy >= 20){
         target->receiveDamage(damage);
         target->setSpeed(target->getSpeed()-10);
-        energy= clamp(energy-200,0,100);
+        energy= clamp(energy-20,0,100);
         context.busterCallTimer+=1;
         context.alarmLevel-=5;
         if (!target->isAlive()){
@@ -337,12 +338,21 @@ int Nami::specialSkill(Character* target, BattleContext& context) {
 
 int Nami::attack(Building* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=ceil(atk*0.5);
+    target->receiveDamage(damage);
+    return damage;
 }
 
 int Nami::specialSkill(Building* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=ceil((atk+40)*1.5);
+    if (energy >= 20){
+        target->receiveDamage(damage);
+        energy = clamp(energy-20,0,100);
+        context.busterCallTimer+=1;
+        context.alarmLevel-=5;
+    }
+    return damage;
 }
 
 void Nami::endTurn(BattleContext& context) {
@@ -363,16 +373,30 @@ Chopper::Chopper(string name, int hp, int atk, int def,
 
 int Chopper::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=atk;
+    target->receiveDamage(damage);
+    if (!target->isAlive()){
+        context.updateMorale();
+        killsDuringTurn=true;
+    }
+    return damage;
 }
 
 int Chopper::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
+    if (energy >= 15 && target->isStrawHat()){
+        int heal = ceil(35+atk*0.5);
+        target->setHp(clamp(target->getHP()+heal,0,target->getMaxHp()));
+        if (target->getName() == "Luffy"){
+            context.updateMorale(5);
+        }
+    }
     return 0;
 }
 
 void Chopper::endTurn(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 /*
@@ -385,16 +409,36 @@ Usopp::Usopp(string name, int hp, int atk, int def,
 
 int Usopp::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage;
+    if (target->getSpeed() < 50) {
+        damage = ceil(atk*1.2);
+    }else damage=atk;
+    target->receiveDamage(damage);
+    if (!target->isAlive()){
+        context.updateMorale();
+    }
+    killsDuringTurn=true;
+    return damage;
 }
 
 int Usopp::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=ceil(atk*0.8);
+    if (energy >= 16){
+        target->receiveDamage(damage);
+        target->setSpeed(target->getSpeed()-12);
+        energy = clamp(energy-16,0,100);
+        context.escapeProgress=clamp(context.escapeProgress+8,0,100);
+    }
+    return damage;
 }
 
 void Usopp::endTurn(BattleContext& context) {
     // TODO: implement
+    if (killsDuringTurn){
+        context.updateMorale(10);
+        killsDuringTurn=false;
+    }
 }
 
 /*
@@ -407,12 +451,35 @@ Franky::Franky(string name, int hp, int atk, int def,
 
 int Franky::attack(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=ceil(atk+0.3*def);
+    if (target->isCP9()){
+        damage=ceil(damage*1.1);
+    }
+    target->receiveDamage(damage);
+    if (!target->isAlive()){
+        context.updateMorale();
+        killsDuringTurn=true;
+    }
+    return damage;
 }
 
 int Franky::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage;
+    if (energy >= 20){
+        damage=ceil(atk*1.8);
+        if (target->getName() == "Lucci"){
+            damage=ceil(damage*1.2);
+        }
+        target->setSpeed(target->getSpeed()-8);
+        target->receiveDamage(damage);
+        energy = clamp(energy-20,0,100);
+        if (!target->isAlive()){
+            context.updateMorale();
+            killsDuringTurn=true;
+        }
+    }
+    return damage;
 }
 
 int Franky::attack(Building* target, BattleContext& context) {
@@ -427,6 +494,12 @@ int Franky::specialSkill(Building* target, BattleContext& context) {
 
 void Franky::endTurn(BattleContext& context) {
     // TODO: implement
+    if (getHpPercen() > 0.7){
+        def+=5;
+    }else if (getHpPercen() < 0.3){
+        atk=ceil(atk*1.1);
+    }
+    killsDuringTurn=false;
 }
 
 /*
