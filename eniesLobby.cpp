@@ -272,6 +272,12 @@ int Sanji::attack(Character* target, BattleContext& context) {
     return damage;
 }
 
+int Sanji::attack(Building* target, BattleContext& context){
+    int damage = ceil(atk + 0.5*speed);
+    target->receiveDamage(damage);
+    return damage;
+}
+
 int Sanji::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
     if (energy >= 18){
@@ -288,6 +294,16 @@ int Sanji::specialSkill(Character* target, BattleContext& context) {
         return damage;
     }
     return 0;
+}
+
+int Sanji::specialSkill(Building* target, BattleContext& context){
+    int damage=0;
+    if (energy >=18){
+        damage=ceil(atk*2.1);
+        target->receiveDamage(damage);
+        energy = clamp(energy - 18, 0, 100);
+    }
+    return damage;
 }
 
 void Sanji::endTurn(BattleContext& context) {
@@ -321,8 +337,9 @@ int Nami::attack(Character* target, BattleContext& context) {
 
 int Nami::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    int damage = atk + 40;
+    int damage =0 ;
     if (energy >= 20){
+        damage=atk + 40;
         target->receiveDamage(damage);
         target->setSpeed(target->getSpeed()-10);
         energy= clamp(energy-20,0,100);
@@ -345,8 +362,9 @@ int Nami::attack(Building* target, BattleContext& context) {
 
 int Nami::specialSkill(Building* target, BattleContext& context) {
     // TODO: implement
-    int damage=ceil((atk+40)*1.5);
+    int damage=0;
     if (energy >= 20){
+        damage=ceil((atk+40)*1.5);
         target->receiveDamage(damage);
         energy = clamp(energy-20,0,100);
         context.busterCallTimer+=1;
@@ -390,6 +408,7 @@ int Chopper::specialSkill(Character* target, BattleContext& context) {
         if (target->getName() == "Luffy"){
             context.updateMorale(5);
         }
+        energy = clamp(energy - 15, 0, 100);
     }
     return 0;
 }
@@ -421,13 +440,32 @@ int Usopp::attack(Character* target, BattleContext& context) {
     return damage;
 }
 
+int Usopp::attack(Building* target, BattleContext& context){
+    int damage=0;
+    damage=ceil(atk*0.5);
+    target->receiveDamage(damage);
+    return damage;
+}
+
 int Usopp::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    int damage=ceil(atk*0.8);
+    int damage=0;
     if (energy >= 16){
+        damage=ceil(atk*0.8);
         target->receiveDamage(damage);
         target->setSpeed(target->getSpeed()-12);
         energy = clamp(energy-16,0,100);
+        context.escapeProgress=clamp(context.escapeProgress+8,0,100);
+    }
+    return damage;
+}
+
+int Usopp::specialSkill(Building* target, BattleContext& context){
+    int damage=0;
+    if (energy>=16){
+        damage=ceil(atk*0.8);
+        target->receiveDamage(damage);
+        energy=clamp(energy-16,0,100);
         context.escapeProgress=clamp(context.escapeProgress+8,0,100);
     }
     return damage;
@@ -484,12 +522,24 @@ int Franky::specialSkill(Character* target, BattleContext& context) {
 
 int Franky::attack(Building* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=ceil(atk+0.3*def);
+    target->receiveDamage(damage);
+    return damage;
 }
 
 int Franky::specialSkill(Building* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage=0;
+    if (energy >= 30){
+        damage=target->getHP();
+        target->receiveDamage(target->getHP());
+        energy = clamp(energy-30,0,100);
+    }else if (energy >= 20){
+        damage=ceil(atk*1.8);
+        target->receiveDamage(damage);
+        energy = clamp(energy-20,0,100);
+    }
+    return damage;
 }
 
 void Franky::endTurn(BattleContext& context) {

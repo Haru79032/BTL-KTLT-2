@@ -112,6 +112,10 @@ public:
 
     int attack(Character* target, BattleContext& context);
     int specialSkill(Character* target, BattleContext& context);
+
+    int attack(Building* target, BattleContext& context);
+    int specialSkill(Building* target, BattleContext& context);
+
     void endTurn(BattleContext& context);
 };
 
@@ -146,6 +150,10 @@ public:
 
     int attack(Character* target, BattleContext& context);
     int specialSkill(Character* target, BattleContext& context);
+    
+    int attack(Building* target, BattleContext& context);
+    int specialSkill(Building* target, BattleContext& context);
+
     void endTurn(BattleContext& context);
 };
 
