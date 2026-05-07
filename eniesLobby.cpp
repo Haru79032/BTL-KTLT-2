@@ -867,8 +867,9 @@ void Fukurou::endTurn(BattleContext& context) {
 /*
  * Building
  */
-Building::Building(string name, int hp) {
+Building::Building(string name, int hp): name(name), hp(hp), destroyed(false) {
     // TODO: implement
+    maxHP=hp;
 }
 
 Building::~Building() {
@@ -877,6 +878,11 @@ Building::~Building() {
 
 void Building::receiveDamage(int damage) {
     // TODO: implement
+    hp -= damage;
+    if (hp <= 0) {
+        hp = 0;
+        destroyed = true;
+    }
 }
 
 bool Building::isDestroyed() const {
@@ -898,6 +904,12 @@ int Building::getHP() const {
     return hp;
 }
 
+string Building::str() const{
+    stringstream ss;
+    ss << std::boolalpha << "Building[name=" << name << ", hp=" << hp << ", maxHP=" << maxHP << ", destroyed=" << destroyed << "]";
+    return ss.str();
+}
+
 /*
  * MainGate
  */
@@ -905,10 +917,16 @@ MainGate::MainGate(string name, int hp) : Building(name, hp) {}
 
 void MainGate::applyEffect(BattleContext& context) {
     // TODO: implement
+    return;
 }
 
 void MainGate::onDestroyed(BattleContext& context) {
     // TODO: implement
+    if (isDestroyed()){
+        context.mainGateDestroyed=true;
+        context.updpateRescueProgress(20);
+        context.updateMorale(5);
+    }
 }
 
 /*
@@ -918,10 +936,16 @@ Courthouse::Courthouse(string name, int hp) : Building(name, hp) {}
 
 void Courthouse::applyEffect(BattleContext& context) {
     // TODO: implement
+    if (!isDestroyed()){
+        context.updateAlarmLevel(5);
+    }
 }
 
 void Courthouse::onDestroyed(BattleContext& context) {
     // TODO: implement
+    if (isDestroyed()){
+        context.updateAlarmLevel(-20);
+    }
 }
 
 /*
@@ -931,6 +955,13 @@ TowerOfJustice::TowerOfJustice(string name, int hp) : Building(name, hp) {}
 
 void TowerOfJustice::applyEffect(BattleContext& context) {
     // TODO: implement
+    if (context.mainGateDestroyed && !context.robinRescued){
+        context.updpateRescueProgress(5);
+    }
+    if (context.rescueProgress >= 100){
+        context.robinRescued=true;
+        context.updateMorale(10);
+    }
 }
 
 /*
@@ -940,6 +971,15 @@ BridgeOfHesitation::BridgeOfHesitation(string name, int hp) : Building(name, hp)
 
 void BridgeOfHesitation::applyEffect(BattleContext& context) {
     // TODO: implement
+    if (context.robinRescued){
+        context.bridgeOpened=true;
+    }
+    if (context.bridgeOpened){
+        context.updateEscapeProgress(5);
+    }
+    if (context.escapeProgress >= 100){
+        context.resultCode = "STRAW_HAT_WIN";
+    }
 }
 
 /*
@@ -949,10 +989,21 @@ BusterCallShip::BusterCallShip(string name, int hp) : Building(name, hp) {}
 
 void BusterCallShip::applyEffect(BattleContext& context) {
     // TODO: implement
+    if (!isDestroyed()){
+        context.busterCallTimer--;
+    }
+    if (context.busterCallTimer <= 0){
+        context.busterCallTimer=0;
+        context.resultCode = "BUSTER_CALL";
+    }
+
 }
 
 void BusterCallShip::onDestroyed(BattleContext& context) {
     // TODO: implement
+    if (isDestroyed()){
+        context.busterCallTimer+=3;
+    }
 }
 
 /*
@@ -968,6 +1019,7 @@ EniesLobbyBattle::~EniesLobbyBattle() {
 
 void EniesLobbyBattle::loadFromFile(const string& filename) {
     // TODO: implement
+    
 }
 
 void EniesLobbyBattle::addStrawHat(Character* character) {
@@ -1000,9 +1052,20 @@ void EniesLobbyBattle::processBuildings() {
 
 void EniesLobbyBattle::checkEndCondition() {
     // TODO: implement
+    if (context.robinRescued && context.escapeProgress >= 100){
+        context.resultCode = "STRAW_HAT_WIN";
+    }else if (context.busterCallTimer <= 0){
+        context.resultCode = "BUSTER_CALL";
+    }else if (context.turnCount >= maxTurns){
+        context.resultCode = "TIME_OUT";
+    }
 }
 
 string EniesLobbyBattle::getResult() const {
     // TODO: implement
-    return "";
+    stringstream ss;
+    ss << context.resultCode << " " << context.turnCount << " " << context.morale << " " << context.alarmLevel << " "
+     << context.rescueProgress << " " << context.escapeProgress << " " << context.busterCallTimer;
+
+    return ss.str();
 }

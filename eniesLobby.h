@@ -283,6 +283,15 @@ public:
     void updateMorale(int change=5){
         morale = clamp(morale+change,0,100);
     }
+    void updateAlarmLevel(int change=0){
+        alarmLevel = clamp(alarmLevel+change,0,100);
+    }
+    void updpateRescueProgress(int change=0){
+        rescueProgress = clamp(rescueProgress+change,0,100);
+    }
+    void updateEscapeProgress(int change=0){
+        escapeProgress = clamp(escapeProgress+change,0,100);
+    }
 };
 
 /*
@@ -305,8 +314,13 @@ public:
     virtual void applyEffect(BattleContext& context) = 0;
     virtual void onDestroyed(BattleContext& context);
 
+    void updateHp(int newHp){
+        hp=clamp(newHp,0,maxHP);
+    }
+
     string getName() const;
     int getHP() const;
+    string str() const;
 };
 
 /*
