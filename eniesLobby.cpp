@@ -1042,16 +1042,31 @@ void EniesLobbyBattle::addStrawHat(Character* character) {
     for (Character** p=strawHats,**pE=strawHats+7;p!=pE;p++){
         if (*p==nullptr){
             *p=character;
+            return;
         }
     }
 }
 
 void EniesLobbyBattle::addCP9Agent(Character* character) {
     // TODO: implement
+    if (character==nullptr) {return;}
+    for (Character** p=cp9Agents,**pE=cp9Agents+7;p!=pE;p++){
+        if (*p==nullptr){
+            *p=character;
+            return;
+        }
+    }
 }
 
 void EniesLobbyBattle::addBuilding(Building* building) {
     // TODO: implement
+    if (building==nullptr) {return;}
+    for (Building** p=buildings,**pE=buildings+7;p!=pE;p++){
+        if (*p==nullptr){
+            *p=building;
+            return;
+        }
+    }
 }
 
 void EniesLobbyBattle::buildTurnOrder() {
