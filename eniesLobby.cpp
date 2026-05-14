@@ -1050,6 +1050,18 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
             maxTurns=*(contextVal+5);
             delete[] contextVal;
         }
+        if (indicatorInput=="STRAW_HAT"){
+            string name;
+            file >> name;
+            if (name=="Luffy"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Luffy("Luffy", hp, atk, def, speed, energy, bounty);
+            }
+        }
+            
     }
 }
 
