@@ -1013,15 +1013,15 @@ EniesLobbyBattle::EniesLobbyBattle(const string& filename) {
     // TODO: implement
     strawHats = new Character*[7];
     for (Character** p=strawHats, **pE=strawHats+7; p!=pE; p++){
-        p=nullptr;
+        *p=nullptr;
     }
     cp9Agents = new Character*[7];
     for (Character** p=cp9Agents, **pE=cp9Agents+7; p!=pE; p++){
-        p=nullptr;
+        *p=nullptr;
     }
     buildings = new Building*[5];
     for (Building** p=buildings, **pE=buildings+5; p!=pE; p++){
-        p=nullptr;
+        *p=nullptr;
     }
     loadFromFile(filename);
 }
@@ -1039,8 +1039,8 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
 void EniesLobbyBattle::addStrawHat(Character* character) {
     // TODO: implement
     if (character==nullptr) {return;}
-    for (Character** p=strawHats,**pE=p+7;p!=pE;p++){
-        if (p!=nullptr){
+    for (Character** p=strawHats,**pE=strawHats+7;p!=pE;p++){
+        if (*p==nullptr){
             *p=character;
         }
     }
