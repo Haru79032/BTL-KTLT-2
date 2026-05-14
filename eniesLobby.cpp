@@ -1058,7 +1058,8 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Luffy("Luffy", hp, atk, def, speed, energy, bounty);
+                Luffy* luffyPtr=new Luffy("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(luffyPtr);
             }
         }
             
