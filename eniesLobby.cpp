@@ -1060,7 +1060,50 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 file >> bounty;
                 Luffy* luffyPtr=new Luffy("Luffy", hp, atk, def, speed, energy, bounty);
                 addStrawHat(luffyPtr);
+            }else if(name=="Zoro"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Zoro* zoroPtr=new Zoro("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(zoroPtr);
+            }else if(name=="Sanji"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Sanji* sanjiPtr=new Sanji("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(sanjiPtr);
+            }else if(name=="Nami"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Nami* namiPtr=new Nami("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(namiPtr);
+            }else if(name=="Chopper"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Chopper* chopperPtr=new Chopper("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(chopperPtr);
+            }else if(name=="Usopp"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Usopp* usoppPtr=new Usopp("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(usoppPtr);
+            }else if(name=="Franky"){
+                int hp,atk,def,speed,energy;
+                long long bounty;
+                file >> hp >> atk >> def >> speed >> energy;
+                file >> bounty;
+                Franky* frankyPtr=new Franky("Luffy", hp, atk, def, speed, energy, bounty);
+                addStrawHat(frankyPtr);
             }
+            
         }
             
     }
