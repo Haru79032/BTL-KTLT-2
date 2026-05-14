@@ -21,6 +21,7 @@ BattleContext::BattleContext() {
     resultCode = "";
 }
 
+BattleContext::BattleContext(int morale, int alarmLevel, int rescueProg, int escapeProg, int busterCall): morale(morale), alarmLevel(alarmLevel), rescueProgress(rescueProg), escapeProgress(escapeProg), busterCallTimer(busterCall) {}
 void BattleContext::nextTurn() {
     // TODO: implement
     turnCount++;
@@ -1033,7 +1034,19 @@ EniesLobbyBattle::~EniesLobbyBattle() {
 
 void EniesLobbyBattle::loadFromFile(const string& filename) {
     // TODO: implement
-    
+    fstream file;
+    file.open(filename, fstream::out);
+    string indicatorInput="";
+    while (file >> indicatorInput){
+        if (indicatorInput=="CONTEXT"){
+            int *contextVal=new int[6];
+            for (int *p=contextVal; p!=contextVal+6;p++){
+                file >> *p;
+            }
+            BattleContext(*(contextVal), *(contextVal+1), *(contextVal+2), *(contextVal+3), *(contextVal+4));
+            maxTurns=*(contextVal+5);
+        }
+    }
 }
 
 void EniesLobbyBattle::addStrawHat(Character* character) {
@@ -1061,7 +1074,7 @@ void EniesLobbyBattle::addCP9Agent(Character* character) {
 void EniesLobbyBattle::addBuilding(Building* building) {
     // TODO: implement
     if (building==nullptr) {return;}
-    for (Building** p=buildings,**pE=buildings+7;p!=pE;p++){
+    for (Building** p=buildings,**pE=buildings+5;p!=pE;p++){
         if (*p==nullptr){
             *p=building;
             return;
