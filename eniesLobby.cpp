@@ -21,7 +21,6 @@ BattleContext::BattleContext() {
     resultCode = "";
 }
 
-BattleContext::BattleContext(int morale, int alarmLevel, int rescueProg, int escapeProg, int busterCall): morale(morale), alarmLevel(alarmLevel), rescueProgress(rescueProg), escapeProgress(escapeProg), busterCallTimer(busterCall) {}
 void BattleContext::nextTurn() {
     // TODO: implement
     turnCount++;
@@ -1035,7 +1034,7 @@ EniesLobbyBattle::~EniesLobbyBattle() {
 void EniesLobbyBattle::loadFromFile(const string& filename) {
     // TODO: implement
     fstream file;
-    file.open(filename, fstream::out);
+    file.open(filename, fstream::in);
     string indicatorInput="";
     while (file >> indicatorInput){
         if (indicatorInput=="CONTEXT"){
@@ -1043,8 +1042,10 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
             for (int *p=contextVal; p!=contextVal+6;p++){
                 file >> *p;
             }
-            BattleContext(*(contextVal), *(contextVal+1), *(contextVal+2), *(contextVal+3), *(contextVal+4));
+            context.morale=*(contextVal);
+            
             maxTurns=*(contextVal+5);
+            delete[] contextVal;
         }
     }
 }

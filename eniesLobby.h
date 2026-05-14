@@ -279,7 +279,6 @@ public:
 
 public:
     BattleContext();
-    BattleContext(int morale, int alarmLevel, int rescueProg, int escapeProg, int busterCall);
     void nextTurn();
     void updateMorale(int change=5){
         morale = clamp(morale+change,0,100);
