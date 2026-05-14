@@ -406,7 +406,7 @@ int Chopper::specialSkill(Character* target, BattleContext& context) {
     if (energy >= 15 && target->isStrawHat()){
         int heal = ceil(35+atk*0.5);
         target->setHp(clamp(target->getHP()+heal,0,target->getMaxHp()));
-        if (target->getName() == "Luffy"){
+        if (target->getName() == name){
             context.updateMorale(5);
         }
         energy = clamp(energy - 15, 0, 100);
@@ -1058,49 +1058,49 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Luffy* luffyPtr=new Luffy("Luffy", hp, atk, def, speed, energy, bounty);
+                Luffy* luffyPtr=new Luffy(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(luffyPtr);
             }else if(name=="Zoro"){
                 int hp,atk,def,speed,energy;
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Zoro* zoroPtr=new Zoro("Luffy", hp, atk, def, speed, energy, bounty);
+                Zoro* zoroPtr=new Zoro(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(zoroPtr);
             }else if(name=="Sanji"){
                 int hp,atk,def,speed,energy;
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Sanji* sanjiPtr=new Sanji("Luffy", hp, atk, def, speed, energy, bounty);
+                Sanji* sanjiPtr=new Sanji(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(sanjiPtr);
             }else if(name=="Nami"){
                 int hp,atk,def,speed,energy;
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Nami* namiPtr=new Nami("Luffy", hp, atk, def, speed, energy, bounty);
+                Nami* namiPtr=new Nami(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(namiPtr);
             }else if(name=="Chopper"){
                 int hp,atk,def,speed,energy;
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Chopper* chopperPtr=new Chopper("Luffy", hp, atk, def, speed, energy, bounty);
+                Chopper* chopperPtr=new Chopper(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(chopperPtr);
             }else if(name=="Usopp"){
                 int hp,atk,def,speed,energy;
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Usopp* usoppPtr=new Usopp("Luffy", hp, atk, def, speed, energy, bounty);
+                Usopp* usoppPtr=new Usopp(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(usoppPtr);
             }else if(name=="Franky"){
                 int hp,atk,def,speed,energy;
                 long long bounty;
                 file >> hp >> atk >> def >> speed >> energy;
                 file >> bounty;
-                Franky* frankyPtr=new Franky("Luffy", hp, atk, def, speed, energy, bounty);
+                Franky* frankyPtr=new Franky(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(frankyPtr);
             }
             
