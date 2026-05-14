@@ -1043,7 +1043,10 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 file >> *p;
             }
             context.morale=*(contextVal);
-            
+            context.alarmLevel=*(contextVal+1);
+            context.rescueProgress=*(contextVal+2);
+            context.escapeProgress=*(contextVal+3);
+            context.busterCallTimer=*(contextVal+4);
             maxTurns=*(contextVal+5);
             delete[] contextVal;
         }
