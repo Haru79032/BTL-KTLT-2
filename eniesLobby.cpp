@@ -1103,9 +1103,77 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 Franky* frankyPtr=new Franky(name, hp, atk, def, speed, energy, bounty);
                 addStrawHat(frankyPtr);
             }
-            
         }
-            
+        if (indicatorInput=="CP9"){
+            string name;
+            file >> name;
+            if (name=="Lucci"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Lucci* ptr=new Lucci(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }if (name=="Kaku"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Kaku* ptr=new Kaku(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }if (name=="Jabra"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Jabra* ptr=new Jabra(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }if (name=="Blueno"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Blueno* ptr=new Blueno(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }if (name=="Kalifa"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Kalifa* ptr=new Kalifa(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }if (name=="Kumadori"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Kumadori* ptr=new Kumadori(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }if (name=="Fukurou"){
+                int hp,atk,def,speed,energy,doriki;
+                file >> hp >> atk >> def >> speed >> energy >> doriki;
+                Fukurou* ptr=new Fukurou(name,hp,atk,def,speed,energy,doriki);
+                addCP9Agent(ptr);
+            }
+        }
+        if (indicatorInput=="BUILDING"){
+            string name;
+            file >> name;
+            if (name=="MainGate"){
+                int hp;
+                file >> hp;
+                MainGate* ptr=new MainGate(name,hp);
+                addBuilding(ptr);
+            }if (name=="Courthouse"){
+                int hp;
+                file >> hp;
+                Courthouse* ptr=new Courthouse(name,hp);
+                addBuilding(ptr);
+            }if (name=="TowerOfJustice"){
+                int hp;
+                file >> hp;
+                TowerOfJustice* ptr=new TowerOfJustice(name,hp);
+                addBuilding(ptr);
+            }if (name=="BridgeOfHesitation"){
+                int hp;
+                file >> hp;
+                BridgeOfHesitation* ptr=new BridgeOfHesitation(name,hp);
+                addBuilding(ptr);
+            }if (name=="BusterCallShip"){
+                int hp;
+                file >> hp;
+                BusterCallShip* ptr=new BusterCallShip(name,hp);
+                addBuilding(ptr);
+            }
+        }
     }
 }
 
