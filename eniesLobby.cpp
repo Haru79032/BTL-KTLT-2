@@ -1024,6 +1024,16 @@ EniesLobbyBattle::EniesLobbyBattle(const string& filename) {
         *p=nullptr;
     }
     loadFromFile(filename);
+    strawHatCount=cp9Count=buildingCount=0;
+    for (Character** p=strawHats;p!=nullptr || p==strawHats+7; ++p){
+        strawHatCount++;
+    }
+    for (Character** p=cp9Agents;p!=nullptr || p==cp9Agents+7; ++p){
+        cp9Count++;
+    }
+    for (Building** p=buildings; p!=nullptr || p==buildings+5; ++p){
+        buildingCount++;
+    }
 }
 
 EniesLobbyBattle::~EniesLobbyBattle() {
