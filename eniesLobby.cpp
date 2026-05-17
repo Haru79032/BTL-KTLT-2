@@ -1028,7 +1028,16 @@ EniesLobbyBattle::EniesLobbyBattle(const string& filename) {
 
 EniesLobbyBattle::~EniesLobbyBattle() {
     // TODO: implement
-
+    for (int i=0;i<7;++i){
+        delete strawHats[i];
+        delete cp9Agents[i];
+    }
+    for (int i=0;i<5;++i){
+        delete buildings[i];
+    }
+    delete[] strawHats;
+    delete[] cp9Agents;
+    delete[] buildings;
 }
 
 void EniesLobbyBattle::loadFromFile(const string& filename) {
@@ -1036,6 +1045,7 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
     fstream file;
     file.open(filename, fstream::in);
     string indicatorInput="";
+    if (!file.is_open()) {return;}
     while (file >> indicatorInput){
         if (indicatorInput=="CONTEXT"){
             int *contextVal=new int[6];
@@ -1050,7 +1060,7 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
             maxTurns=*(contextVal+5);
             delete[] contextVal;
         }
-        if (indicatorInput=="STRAW_HAT"){
+        else if (indicatorInput=="STRAW_HAT"){
             string name;
             file >> name;
             if (name=="Luffy"){
@@ -1104,7 +1114,7 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 addStrawHat(frankyPtr);
             }
         }
-        if (indicatorInput=="CP9"){
+        else if (indicatorInput=="CP9"){
             string name;
             file >> name;
             if (name=="Lucci"){
@@ -1144,7 +1154,7 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
                 addCP9Agent(ptr);
             }
         }
-        if (indicatorInput=="BUILDING"){
+        else if (indicatorInput=="BUILDING"){
             string name;
             file >> name;
             if (name=="MainGate"){
@@ -1175,6 +1185,7 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
             }
         }
     }
+    file.close();
 }
 
 void EniesLobbyBattle::addStrawHat(Character* character) {
