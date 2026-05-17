@@ -292,6 +292,9 @@ public:
     void updateEscapeProgress(int change=0){
         escapeProgress = clamp(escapeProgress+change,0,100);
     }
+    void updateBattleEnded(bool a){
+        battleEnded=a;
+    }
 };
 
 /*

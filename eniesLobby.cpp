@@ -1027,17 +1027,17 @@ EniesLobbyBattle::EniesLobbyBattle(const string& filename) {
     maxTurns=0;
     loadFromFile(filename);
     strawHatCount=cp9Count=buildingCount=0;
-    for (Character** p=strawHats;p==strawHats+7; ++p){
+    for (Character** p=strawHats;p!=strawHats+7; ++p){
         if (p!=nullptr){
             strawHatCount++;
         }
     }
-    for (Character** p=cp9Agents;p==cp9Agents+7; ++p){
+    for (Character** p=cp9Agents;p!=cp9Agents+7; ++p){
         if(p!=nullptr){
             cp9Count++;
         }
     }
-    for (Building** p=buildings;p==buildings+5; ++p){
+    for (Building** p=buildings;p!=buildings+5; ++p){
         if(p!=nullptr){
             buildingCount++;
         }
@@ -1056,6 +1056,12 @@ EniesLobbyBattle::~EniesLobbyBattle() {
     delete[] strawHats;
     delete[] cp9Agents;
     delete[] buildings;
+    TurnNode* curr=turnOrder;
+    while (curr != nullptr){
+        TurnNode* next=curr->next;
+        delete curr;
+        curr = next;
+    }
 }
 
 void EniesLobbyBattle::loadFromFile(const string& filename) {
@@ -1253,22 +1259,24 @@ void EniesLobbyBattle::buildTurnOrder() {
     TurnNode* head = new TurnNode;
     TurnNode* tail = nullptr;
     head->next=tail;
-    for (Character** p=strawHats; p!=p+7; ++p){
-        if (p==nullptr) break;
+    for (Character** p=strawHats; p!=strawHats+7; ++p){
+        if (*p==nullptr) continue;
         TurnNode* temp=getNodebeforeTail(head);
         temp->next=new TurnNode;
         temp=temp->next;
         temp->data=*p;
         temp->next=tail;
     }
-    for (Character** p=cp9Agents; p!=p+7; ++p){
-        if (p==nullptr) break;
+    for (Character** p=cp9Agents; p!=cp9Agents+7; ++p){
+        if (*p==nullptr) continue;
         TurnNode* temp=getNodebeforeTail(head);
         temp->next=new TurnNode;
         temp=temp->next;
         temp->data=*p;
         temp->next=tail;
     }
+    turnOrder=head->next;
+    delete head;
 }
 
 void EniesLobbyBattle::runBattle() {
