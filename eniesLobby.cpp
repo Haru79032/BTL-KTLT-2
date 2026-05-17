@@ -978,9 +978,6 @@ void BridgeOfHesitation::applyEffect(BattleContext& context) {
     if (context.bridgeOpened){
         context.updateEscapeProgress(5);
     }
-    if (context.escapeProgress >= 100){
-        context.resultCode = "STRAW_HAT_WIN";
-    }
 }
 
 /*
@@ -995,7 +992,6 @@ void BusterCallShip::applyEffect(BattleContext& context) {
     }
     if (context.busterCallTimer <= 0){
         context.busterCallTimer=0;
-        context.resultCode = "BUSTER_CALL";
     }
 
 }
@@ -1028,17 +1024,17 @@ EniesLobbyBattle::EniesLobbyBattle(const string& filename) {
     loadFromFile(filename);
     strawHatCount=cp9Count=buildingCount=0;
     for (Character** p=strawHats;p!=strawHats+7; ++p){
-        if (p!=nullptr){
+        if (*p!=nullptr){
             strawHatCount++;
         }
     }
     for (Character** p=cp9Agents;p!=cp9Agents+7; ++p){
-        if(p!=nullptr){
+        if(*p!=nullptr){
             cp9Count++;
         }
     }
     for (Building** p=buildings;p!=buildings+5; ++p){
-        if(p!=nullptr){
+        if(*p!=nullptr){
             buildingCount++;
         }
     }
@@ -1295,10 +1291,19 @@ void EniesLobbyBattle::checkEndCondition() {
     // TODO: implement
     if (context.robinRescued && context.escapeProgress >= 100){
         context.resultCode = "STRAW_HAT_WIN";
+        context.battleEnded=true;
     }else if (context.busterCallTimer <= 0){
         context.resultCode = "BUSTER_CALL";
+        context.battleEnded=true;
+    }else if (strawHatCount==0){
+        context.resultCode="CP9_WIN";
+        context.battleEnded=true;
+    }else if (cp9Count==0){
+        context.resultCode="STRAW_HAT_WIN_BY_DEFEAT_CP9";
+        context.battleEnded=true;
     }else if (context.turnCount >= maxTurns){
         context.resultCode = "TIME_OUT";
+        context.battleEnded=true;
     }
 }
 
