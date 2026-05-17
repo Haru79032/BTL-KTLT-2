@@ -504,7 +504,7 @@ int Franky::attack(Character* target, BattleContext& context) {
 
 int Franky::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
-    int damage;
+    int damage=0;
     if (energy >= 20){
         damage=ceil(atk*1.8);
         if (target->getName() == "Lucci"){
@@ -648,6 +648,7 @@ int Kaku::specialSkill(Character* target, BattleContext& context) {
         damage1=ceil(atk*1.2);
         damage2=ceil(atk);
         damage3=ceil(atk*0.8);
+        energy = clamp(energy-20,0,100);
         target->receiveDamage(damage1);
         if (!target->isAlive()){
             context.updateMorale(-5);
@@ -663,7 +664,6 @@ int Kaku::specialSkill(Character* target, BattleContext& context) {
             context.updateMorale(-5);
             return damage1+damage2+damage3;
         }
-        energy = clamp(energy-20,0,100);
     }
     return 0;
 }
@@ -783,7 +783,7 @@ int Kalifa::specialSkill(Character* target, BattleContext& context) {
         target->setSpeed(target->getSpeed()-6);
         energy = clamp(energy-18,0,100);
     }
-    return 0;
+    return damage;
 }
 
 void Kalifa::endTurn(BattleContext& context) {
@@ -882,7 +882,7 @@ void Building::receiveDamage(int damage) {
     if (hp <= 0) {
         hp = 0;
         destroyed = true;
-    }
+    };
 }
 
 bool Building::isDestroyed() const {
