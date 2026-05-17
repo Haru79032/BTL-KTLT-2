@@ -437,7 +437,7 @@ int Usopp::attack(Character* target, BattleContext& context) {
     if (!target->isAlive()){
         context.updateMorale();
     }
-    killsDuringTurn=true;
+    killsDuringTurn=true; // Attacked this turn
     return damage;
 }
 
@@ -445,6 +445,7 @@ int Usopp::attack(Building* target, BattleContext& context){
     int damage=0;
     damage=ceil(atk*0.5);
     target->receiveDamage(damage);
+    killsDuringTurn=true; // Attacked this turn
     return damage;
 }
 
@@ -1203,6 +1204,7 @@ void EniesLobbyBattle::loadFromFile(const string& filename) {
         }
     }
     file.close();
+    buildTurnOrder();
 }
 
 void EniesLobbyBattle::addStrawHat(Character* character) {
@@ -1238,8 +1240,35 @@ void EniesLobbyBattle::addBuilding(Building* building) {
     }
 }
 
+
+TurnNode* getNodebeforeTail(TurnNode* head){
+    TurnNode* ite=head;
+    while (ite->next!=nullptr){
+        ite=ite->next;
+    }
+    return ite;
+}
 void EniesLobbyBattle::buildTurnOrder() {
     // TODO: implement
+    TurnNode* head = new TurnNode;
+    TurnNode* tail = nullptr;
+    head->next=tail;
+    for (Character** p=strawHats; p!=p+7; ++p){
+        if (p==nullptr) break;
+        TurnNode* temp=getNodebeforeTail(head);
+        temp->next=new TurnNode;
+        temp=temp->next;
+        temp->data=*p;
+        temp->next=tail;
+    }
+    for (Character** p=cp9Agents; p!=p+7; ++p){
+        if (p==nullptr) break;
+        TurnNode* temp=getNodebeforeTail(head);
+        temp->next=new TurnNode;
+        temp=temp->next;
+        temp->data=*p;
+        temp->next=tail;
+    }
 }
 
 void EniesLobbyBattle::runBattle() {
