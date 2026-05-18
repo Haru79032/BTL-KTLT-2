@@ -470,7 +470,7 @@ int Chopper::specialSkill(Character* target, BattleContext& context) {
     if (energy >= 15 && target->isStrawHat()){
         int heal = ceil(35+atk*0.5);
         target->setHp(clamp(target->getHP()+heal,0,target->getMaxHp()));
-        if (target->getName() == name){
+        if (target->getName() == "Luffy"){
             context.updateMorale(5);
         }
         energy = clamp(energy - 15, 0, 100);
