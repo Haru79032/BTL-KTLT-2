@@ -92,6 +92,10 @@ public:
 
     int attack(Character* target, BattleContext& context);
     int specialSkill(Character* target, BattleContext& context);
+
+    int attack(Building* target, BattleContext& context);
+    int specialSkill(Building* target, BattleContext& context);
+
     void endTurn(BattleContext& context);
 };
 
@@ -102,6 +106,10 @@ public:
 
     int attack(Character* target, BattleContext& context);
     int specialSkill(Character* target, BattleContext& context);
+
+    int attack(Building* target, BattleContext& context);
+    int specialSkill(Building* target, BattleContext& context);
+
     void endTurn(BattleContext& context);
 };
 
@@ -140,6 +148,9 @@ public:
 
     int attack(Character* target, BattleContext& context);
     int specialSkill(Character* target, BattleContext& context);
+
+    int attack(Building* target, BattleContext& context);
+
     void endTurn(BattleContext& context);
 };
 
@@ -324,6 +335,9 @@ public:
     string getName() const;
     int getHP() const;
     string str() const;
+    float getHpPercen(){
+        return (float)(hp*1.0/maxHP*1.0);
+    }
 };
 
 /*

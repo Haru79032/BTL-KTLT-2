@@ -168,7 +168,7 @@ int Luffy::specialSkill(Character* target, BattleContext& context) {
         speed += 15; 
         atk += 15;
         context.alarmLevel+=10;
-        hp=ceil(hp*0.8);
+        hp=ceil(hp*0.92);
         energy= clamp(energy - 20, 0, 100);
         if (!target->isAlive()){
             killsDuringTurn=true;
@@ -178,6 +178,33 @@ int Luffy::specialSkill(Character* target, BattleContext& context) {
     }
     return 0;
 }
+
+int Luffy::attack(Building* target, BattleContext& context) {
+    // TODO: implement
+    int damage = 0;
+    if (getHpPercen() > 0.5){damage = atk;}
+    else if (getHpPercen() > 0.3 && getHpPercen() <=0.5) {damage = ceil(atk*1.15);}
+    else {damage = ceil(atk*1.3);}
+    target->receiveDamage(damage);
+    return damage;
+}
+
+int Luffy::specialSkill(Building* target, BattleContext& context) {
+    // TODO: implement
+    if (getHpPercen() >= 0.15 && energy >= 20){
+        int damage = atk*2;
+        target->receiveDamage(damage);
+        speed += 15; 
+        atk += 15;
+        context.alarmLevel+=10;
+        hp=ceil(hp*0.92);
+        energy= clamp(energy - 20, 0, 100);
+        return damage;
+    }
+    return 0;
+}
+
+
 
 void Luffy::endTurn(BattleContext& context) {
     // TODO: implement
@@ -239,6 +266,28 @@ int Zoro::specialSkill(Character* target, BattleContext& context) {
     }
     return 0;
 }
+
+int Zoro::attack(Building* target, BattleContext& context) {
+    // TODO: implement
+    return 0;
+}
+
+int Zoro::specialSkill(Building* target, BattleContext& context) {
+    // TODO: implement
+    if (energy >= 15){
+        int damage = 0;
+        if (target->getHpPercen() < 0.5){
+            damage = ceil((atk*2.2)*1.5);
+        }else{
+            damage = ceil(atk*2.2);
+        }
+        target->receiveDamage(damage);
+        energy= clamp(energy - 15, 0, 100);
+        return damage;
+    }
+    return 0;
+}
+
 
 void Zoro::endTurn(BattleContext& context) {
     // TODO: implement
@@ -398,6 +447,13 @@ int Chopper::attack(Character* target, BattleContext& context) {
         context.updateMorale();
         killsDuringTurn=true;
     }
+    return damage;
+}
+
+int Chopper::attack(Building* target, BattleContext& context) {
+    // TODO: implement
+    int damage=atk;
+    target->receiveDamage(damage);
     return damage;
 }
 
