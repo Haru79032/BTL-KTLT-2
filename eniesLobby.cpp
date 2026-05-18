@@ -251,7 +251,7 @@ int Zoro::specialSkill(Character* target, BattleContext& context) {
             if (!target->isAlive()){
                 context.updateMorale(4);
                 killsDuringTurn=true;
-                energy+=8;
+                energy=clamp(energy+8,0,100);
             }
         }else{
             damage = ceil(atk*2.2);
