@@ -402,7 +402,7 @@ int Nami::specialSkill(Character* target, BattleContext& context) {
         target->setSpeed(target->getSpeed()-10);
         energy= clamp(energy-20,0,100);
         context.busterCallTimer+=1;
-        context.alarmLevel-=5;
+        context.updateAlarmLevel(-5);
         if (!target->isAlive()){
             killsDuringTurn=true;
             context.updateMorale();
@@ -426,7 +426,7 @@ int Nami::specialSkill(Building* target, BattleContext& context) {
         target->receiveDamage(damage);
         energy = clamp(energy-20,0,100);
         context.busterCallTimer+=1;
-        context.alarmLevel-=5;
+        context.updateAlarmLevel(-5);
     }
     return damage;
 }
