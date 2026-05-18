@@ -132,7 +132,7 @@ bool StrawHat::isStrawHat() const {
 string StrawHat::str() const {
     // TODO: implement
     stringstream ss;
-    ss << "StrawHat [ name =" << name << ", hp = " << hp << ", atk = " << atk
+    ss << "StrawHat[name =" << name << ", hp = " << hp << ", atk = " << atk
        << ", def = " << def << ", speed = " << speed
        << ", energy = " << energy << ", bounty = " << bounty << " ]";
     return ss.str();
@@ -167,7 +167,7 @@ int Luffy::specialSkill(Character* target, BattleContext& context) {
         target->receiveDamage(damage);
         speed += 15; 
         atk += 15;
-        context.alarmLevel+=10;
+        context.updateAlarmLevel(10);
         hp=ceil(hp*0.92);
         energy= clamp(energy - 20, 0, 100);
         if (!target->isAlive()){
@@ -630,7 +630,7 @@ bool CP9Agent::isCP9() const {
 string CP9Agent::str() const {
     // TODO: implement
     stringstream ss;
-    ss << "CP9Agent [ name =" << name << ", hp = " << hp << ", atk = " << atk
+    ss << "CP9Agent[name =" << name << ", hp = " << hp << ", atk = " << atk
        << ", def = " << def << ", speed = " << speed
        << ", energy = " << energy << ", doriki = " << doriki << " ]";
     return ss.str();
