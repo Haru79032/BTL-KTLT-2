@@ -168,7 +168,7 @@ int Luffy::specialSkill(Character* target, BattleContext& context) {
         speed += 15; 
         atk += 15;
         context.updateAlarmLevel(10);
-        hp=ceil(hp*0.92);
+        hp=clamp(hp-(int)ceil(maxHp*0.08),0,maxHp);
         energy= clamp(energy - 20, 0, 100);
         if (!target->isAlive()){
             killsDuringTurn=true;
@@ -196,8 +196,8 @@ int Luffy::specialSkill(Building* target, BattleContext& context) {
         target->receiveDamage(damage);
         speed += 15; 
         atk += 15;
-        context.alarmLevel+=10;
-        hp=ceil(hp*0.92);
+        context.updateAlarmLevel(10);
+        hp=clamp(hp-(int)ceil(maxHp*0.08),0,maxHp);
         energy= clamp(energy - 20, 0, 100);
         return damage;
     }
