@@ -1277,6 +1277,7 @@ void EniesLobbyBattle::buildTurnOrder() {
 
 void EniesLobbyBattle::runBattle() {
     // TODO: implement
+    
 }
 
 void EniesLobbyBattle::processTurn(Character* character) {
@@ -1285,6 +1286,9 @@ void EniesLobbyBattle::processTurn(Character* character) {
 
 void EniesLobbyBattle::processBuildings() {
     // TODO: implement
+    for (Building** p=buildings; p!=buildings+5;++p){
+        (*p)->applyEffect(context);
+    }
 }
 
 void EniesLobbyBattle::checkEndCondition() {
