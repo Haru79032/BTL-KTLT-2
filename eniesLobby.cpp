@@ -228,7 +228,7 @@ Zoro::Zoro(string name, int hp, int atk, int def,
 int Zoro::attack(Character* target, BattleContext& context) {
     // TODO: implement
     int damage = 0;
-    if (getHpPercen() < 0.4) {
+    if (target->getHpPercen() < 0.4) {
         damage = ceil((atk+def*0.2)*1.15);
     }else{
         damage = ceil(atk+def*0.2);
@@ -247,6 +247,7 @@ int Zoro::specialSkill(Character* target, BattleContext& context) {
         int damage = 0;
         if (target->getHpPercen() < 0.5){
             damage = ceil((atk*2.2)*1.5);
+            target->receiveDamage(damage);
             if (!target->isAlive()){
                 context.updateMorale(4);
                 killsDuringTurn=true;
@@ -254,13 +255,13 @@ int Zoro::specialSkill(Character* target, BattleContext& context) {
             }
         }else{
             damage = ceil(atk*2.2);
+            target->receiveDamage(damage);
             if (!target->isAlive()){
                 context.updateMorale(4);
                 killsDuringTurn=true;
-                energy+=8;
+                energy=clamp(energy+8,0,100);
             }
         }
-        target->receiveDamage(damage);
         energy= clamp(energy - 15, 0, 100);
         return damage;
     }
@@ -269,7 +270,14 @@ int Zoro::specialSkill(Character* target, BattleContext& context) {
 
 int Zoro::attack(Building* target, BattleContext& context) {
     // TODO: implement
-    return 0;
+    int damage = 0;
+    if (target->getHpPercen() < 0.4) {
+        damage = ceil((atk+def*0.2)*1.15);
+    }else{
+        damage = ceil(atk+def*0.2);
+    }
+    target->receiveDamage(damage);
+    return damage;
 }
 
 int Zoro::specialSkill(Building* target, BattleContext& context) {
