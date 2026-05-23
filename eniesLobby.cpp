@@ -27,6 +27,21 @@ void BattleContext::nextTurn() {
     // TODO: implement
     turnCount++;
 }
+string BattleContext::str(){
+    stringstream ss;
+    ss << "BattleContext[turnCount=" << turnCount << ", morale=" << morale
+       << ", alarmLevel=" << alarmLevel << ", rescueProgress=" << rescueProgress
+       << ", escapeProgress=" << escapeProgress << ", busterCallTimer=" << busterCallTimer
+       << ", mainGateDestroyed=" << mainGateDestroyed
+       << ", courtHouseDestroyed=" << courtHouseDestroyed
+       << ", busterDestroyed=" << busterDestroyed
+       << ", robinRescued=" << robinRescued
+       << ", bridgeOpened=" << bridgeOpened
+       << ", battleEnded=" << battleEnded
+       << ", resultCode=" << resultCode
+       << "]";
+    return ss.str();
+}
 
 /*
  * Character
@@ -1416,12 +1431,18 @@ TurnNode* moveHeadtoTail(TurnNode* head){
 
 void EniesLobbyBattle::runBattle() {
     // TODO: implement
+    while (!context.battleEnded){
     TurnNode* currentAction=turnOrder;
+    cout << "Turn " << context.turnCount << " - Actor turn: " << currentAction->data->str() << endl;
     processTurn(currentAction->data);
+    cout << "Context after turn: " << context.str() << endl;
     turnOrder=moveHeadtoTail(turnOrder);
     processBuildings();
+    cout << "Processed buildings" << endl;
     context.nextTurn();
     checkEndCondition();
+    cout << "Checked end" << endl;
+    }
 }
 
 void EniesLobbyBattle::processTurn(Character* character) {
@@ -1477,14 +1498,17 @@ void EniesLobbyBattle::processTurn(Character* character) {
         if (character->getName()=="Chopper"){
             int heal{0};
             if (lStraw!=nullptr) {heal=character->specialSkill(lStraw, context);}
+            if (heal) {cout << lStraw->getName() << "got healed" << endl;}
             if (!heal){
                 if (bTarget!=nullptr){
                     int damage=character->attack(bTarget,context);
+                    cout << "Chopper attacked " << bTarget->getName() << " for " << damage << " damage" << endl;
                     if (bTarget->isDestroyed()){
                         bTarget->onDestroyed(context);
                     }
                 }else if (cTarget!=nullptr) {
-                    character->attack(cTarget, context);
+                    int damage=character->attack(cTarget, context);
+                    cout << "Chopper attacked " << cTarget->getName() << " for " << damage << " damage" << endl;
                 }
             }
             character->endTurn(context);
@@ -1492,7 +1516,8 @@ void EniesLobbyBattle::processTurn(Character* character) {
             if (sTarget!=nullptr){  
                 int damage=character->specialSkill(sTarget,context);
                 if (!damage){
-                    character->attack(sTarget,context);
+                    int damage=character->attack(sTarget,context);
+                    cout << "Fukurou attacked " << sTarget->getName() << " for " << damage << " damage" << endl;
                 }
                 character->endTurn(context);
             }
@@ -1512,7 +1537,8 @@ void EniesLobbyBattle::processTurn(Character* character) {
             }else if (cTarget!=nullptr) {
                 int damage=character->specialSkill(cTarget,context);
                 if (!damage){
-                    character->attack(cTarget, context);
+                    damage=character->attack(cTarget, context);
+                    cout << character->getName() << " attacked " << cTarget->getName() << " for " << damage << " damage" << endl;
                 }
             }
             character->endTurn(context);
@@ -1520,7 +1546,8 @@ void EniesLobbyBattle::processTurn(Character* character) {
             if (sTarget!=nullptr){
                 int damage=character->specialSkill(sTarget,context);
                 if (!damage){
-                    character->attack(sTarget, context);
+                    damage=character->attack(sTarget, context);
+                    cout << character->getName() << " attacked " << sTarget->getName() << " for " << damage << " damage" << endl;
                 }
             }
             character->endTurn(context);
@@ -1535,6 +1562,7 @@ void EniesLobbyBattle::processBuildings() {
     for (Building** p=buildings; p!=buildings+5;++p){
         if ((*p)!=nullptr && !(*p)->isDestroyed()){
             (*p)->applyEffect(context);
+            cout << (*p)->getName() << " applied effect" << endl;
         }
     }
 }

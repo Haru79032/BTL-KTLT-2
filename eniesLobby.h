@@ -324,6 +324,7 @@ public:
     void updateBattleEnded(bool a){
         battleEnded=a;
     }
+    string str();
 };
 
 /*
