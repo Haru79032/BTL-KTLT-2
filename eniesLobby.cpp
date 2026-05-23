@@ -401,7 +401,7 @@ Nami::Nami(string name, int hp, int atk, int def,
 int Nami::attack(Character* target, BattleContext& context) {
     // TODO: implement
     int damage=atk;
-    damage = damage - ceil(0.3*target->getDef());
+    damage = damage - ceil(0.7*target->getDef());
     target->receiveDamage(damage);
     if (!target->isAlive()){
         context.updateMorale();
