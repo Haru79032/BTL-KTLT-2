@@ -315,7 +315,7 @@ public:
     void updateAlarmLevel(int change=0){
         alarmLevel = clamp(alarmLevel+change,0,100);
     }
-    void updpateRescueProgress(int change=0){
+    void updateRescueProgress(int change=0){
         rescueProgress = clamp(rescueProgress+change,0,100);
     }
     void updateEscapeProgress(int change=0){

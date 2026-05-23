@@ -1,0 +1,82 @@
+===== TEST_003: SIMPLE CHARACTER ATTACK =====
+
+[Round 1] StrawHat attacks
+- Luffy special -> Lucci
+  actor(before):  StrawHat[name=Luffy, hp=120, atk=35, def=20, speed=25, energy=50, bounty=1500000000] | alive=true
+  target(before): CP9[name=Lucci, hp=150, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+  damage: 45
+  actor(after):   StrawHat[name=Luffy, hp=110, atk=50, def=20, speed=40, energy=30, bounty=1500000000] | alive=true
+  target(after):  CP9[name=Lucci, hp=105, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+- Nami attack -> Kaku
+  actor(before):  StrawHat[name=Nami, hp=80, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+  target(before): CP9[name=Kaku, hp=130, atk=35, def=22, speed=28, energy=55, doriki=2200] | alive=true
+  damage: 6
+  actor(after):   StrawHat[name=Nami, hp=80, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+  target(after):  CP9[name=Kaku, hp=124, atk=35, def=22, speed=28, energy=55, doriki=2200] | alive=true
+- Franky special -> Kalifa
+  actor(before):  StrawHat[name=Franky, hp=130, atk=32, def=28, speed=18, energy=50, bounty=394000000] | alive=true
+  target(before): CP9[name=Kalifa, hp=95, atk=26, def=18, speed=32, energy=50, doriki=630] | alive=true
+  damage: 21
+  actor(after):   StrawHat[name=Franky, hp=130, atk=32, def=28, speed=18, energy=20, bounty=394000000] | alive=true
+  target(after):  CP9[name=Kalifa, hp=74, atk=26, def=18, speed=32, energy=50, doriki=630] | alive=true
+
+[Round 2] CP9 attacks
+- Lucci attack -> Luffy
+  actor(before):  CP9[name=Lucci, hp=105, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+  target(before): StrawHat[name=Luffy, hp=110, atk=50, def=20, speed=40, energy=30, bounty=1500000000] | alive=true
+  damage: 220
+  actor(after):   CP9[name=Lucci, hp=105, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+  target(after):  StrawHat[name=Luffy, hp=0, atk=50, def=20, speed=40, energy=30, bounty=1500000000] | alive=false
+- Kaku special -> Nami
+  actor(before):  CP9[name=Kaku, hp=124, atk=35, def=22, speed=28, energy=55, doriki=2200] | alive=true
+  target(before): StrawHat[name=Nami, hp=80, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+  damage: 69
+  actor(after):   CP9[name=Kaku, hp=124, atk=35, def=22, speed=28, energy=35, doriki=2200] | alive=true
+  target(after):  StrawHat[name=Nami, hp=11, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+- Kalifa special -> Franky
+  actor(before):  CP9[name=Kalifa, hp=74, atk=26, def=18, speed=32, energy=50, doriki=630] | alive=true
+  target(before): StrawHat[name=Franky, hp=130, atk=32, def=28, speed=18, energy=20, bounty=394000000] | alive=true
+  damage: 9
+  actor(after):   CP9[name=Kalifa, hp=74, atk=26, def=18, speed=32, energy=32, doriki=630] | alive=true
+  target(after):  StrawHat[name=Franky, hp=121, atk=32, def=28, speed=12, energy=20, bounty=394000000] | alive=true
+===== TEST_003: SIMPLE CHARACTER ATTACK =====
+
+[Round 1] StrawHat attacks
+- Luffy special -> Lucci
+  actor(before):  StrawHat[name=Luffy, hp=120, atk=35, def=20, speed=25, energy=50, bounty=1500000000] | alive=true
+  target(before): CP9[name=Lucci, hp=150, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+  damage: 70
+  actor(after):   StrawHat[name=Luffy, hp=110, atk=50, def=20, speed=40, energy=30, bounty=1500000000] | alive=true
+  target(after):  CP9[name=Lucci, hp=105, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+- Nami attack -> Kaku
+  actor(before):  StrawHat[name=Nami, hp=80, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+  target(before): CP9[name=Kaku, hp=130, atk=35, def=22, speed=28, energy=55, doriki=2200] | alive=true
+  damage: 29
+  actor(after):   StrawHat[name=Nami, hp=80, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+  target(after):  CP9[name=Kaku, hp=123, atk=35, def=22, speed=28, energy=55, doriki=2200] | alive=true
+- Franky special -> Kalifa
+  actor(before):  StrawHat[name=Franky, hp=130, atk=32, def=28, speed=18, energy=50, bounty=394000000] | alive=true
+  target(before): CP9[name=Kalifa, hp=95, atk=26, def=18, speed=32, energy=50, doriki=630] | alive=true
+  damage: 58
+  actor(after):   StrawHat[name=Franky, hp=130, atk=32, def=28, speed=18, energy=30, bounty=394000000] | alive=true
+  target(after):  CP9[name=Kalifa, hp=55, atk=26, def=18, speed=24, energy=50, doriki=630] | alive=true
+
+[Round 2] CP9 attacks
+- Lucci attack -> Luffy
+  actor(before):  CP9[name=Lucci, hp=105, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+  target(before): StrawHat[name=Luffy, hp=110, atk=50, def=20, speed=40, energy=30, bounty=1500000000] | alive=true
+  damage: 374
+  actor(after):   CP9[name=Lucci, hp=105, atk=40, def=25, speed=30, energy=60, doriki=4000] | alive=true
+  target(after):  StrawHat[name=Luffy, hp=0, atk=50, def=20, speed=40, energy=30, bounty=1500000000] | alive=false
+- Kaku special -> Nami
+  actor(before):  CP9[name=Kaku, hp=123, atk=35, def=22, speed=28, energy=55, doriki=2200] | alive=true
+  target(before): StrawHat[name=Nami, hp=80, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+  damage: 0
+  actor(after):   CP9[name=Kaku, hp=123, atk=35, def=22, speed=28, energy=35, doriki=2200] | alive=true
+  target(after):  StrawHat[name=Nami, hp=11, atk=22, def=12, speed=35, energy=60, bounty=366000000] | alive=true
+- Kalifa special -> Franky
+  actor(before):  CP9[name=Kalifa, hp=55, atk=26, def=18, speed=24, energy=50, doriki=630] | alive=true
+  target(before): StrawHat[name=Franky, hp=130, atk=32, def=28, speed=18, energy=30, bounty=394000000] | alive=true
+  damage: 37
+  actor(after):   CP9[name=Kalifa, hp=55, atk=26, def=18, speed=24, energy=32, doriki=630] | alive=true
+  target(after):  StrawHat[name=Franky, hp=121, atk=32, def=28, speed=12, energy=30, bounty=394000000] | alive=true
