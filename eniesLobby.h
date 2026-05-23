@@ -22,6 +22,8 @@ protected:
     int energy;
     bool alive;
     bool killsDuringTurn=false;
+    bool sLowest=false;
+    bool cLowest=false;
 
 public:
     Character();
@@ -63,6 +65,18 @@ public:
     }
     void setAtk(int newAtk){
         atk=newAtk;
+    }
+    void flipSLowest(){
+        sLowest=!sLowest;
+    }
+    void flipCLowest(){
+        cLowest=!cLowest;
+    }
+    bool issLowest(){
+        return sLowest;
+    }
+    bool iscLowest(){
+        return cLowest;
     }
 };
 
@@ -283,6 +297,8 @@ public:
     int escapeProgress;
     int busterCallTimer;
     bool mainGateDestroyed;
+    bool courtHouseDestroyed;
+    bool busterDestroyed;
     bool robinRescued;
     bool bridgeOpened;
     bool battleEnded;
