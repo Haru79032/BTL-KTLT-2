@@ -745,29 +745,33 @@ int Kaku::specialSkill(Character* target, BattleContext& context) {
     // TODO: implement
     int damage1,damage2,damage3;
     if (energy >=20){
-        damage1=ceil(atk*1.2);
-        damage2=ceil(atk);
-        damage3=ceil(atk*0.8);
         energy = clamp(energy-20,0,100);
-        int damage = damage1 - target->getDef();
+        int sumDmg=0;
+        int damage=ceil(atk*1.2);
+        damage=damage-target->getDef();
         target->receiveDamage(damage);
+        sumDmg+=damage;
         if (!target->isAlive()){
             context.updateMorale(-5);
-            return damage;
+            return sumDmg;
         }
-        int damage_2 = damage2 - target->getDef();
-        target->receiveDamage(damage2);
+        damage=atk;
+        damage = damage - target->getDef();
+        target->receiveDamage(damage);
+        sumDmg+=damage;
         if (!target->isAlive()){
             context.updateMorale(-5);
-            return damage+damage_2;
+            return sumDmg;
         }
-        int damage_3 = damage3 - target->getDef();
-        target->receiveDamage(damage3);
+        damage=ceil(atk*0.8);
+        damage = damage - target->getDef();
+        target->receiveDamage(damage);
+        sumDmg+=damage;
         if (!target->isAlive()){
             context.updateMorale(-5);
-            return damage+damage_2+damage_3;
+            return sumDmg;
         }
-        return damage+damage_2+damage_3;
+        return sumDmg;
     }
     return 0;
 }
