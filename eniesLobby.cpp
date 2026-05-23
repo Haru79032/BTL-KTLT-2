@@ -1019,6 +1019,7 @@ void Courthouse::onDestroyed(BattleContext& context) {
     // TODO: implement
     if (isDestroyed()){
         context.updateAlarmLevel(-20);
+        context.courtHouseDestroyed=true;
     }
 }
 
@@ -1073,6 +1074,7 @@ void BusterCallShip::onDestroyed(BattleContext& context) {
     // TODO: implement
     if (isDestroyed()){
         context.busterCallTimer+=3;
+        context.busterDestroyed=true;
     }
 }
 
@@ -1384,10 +1386,17 @@ void EniesLobbyBattle::processTurn(Character* character) {
                 targetName="Courthouse";
             }else if (context.busterCallTimer<=5 && !context.busterDestroyed){
                 targetName="BusterCallShip";
-            }else if (context.robinRescued && !context.bridgeOpened){
+            }else if (context.robinRescued){
                 targetName="BridgeOfHesitation";}
             if ((*p)!=nullptr && (*p)->getName()==targetName && !(*p)->isDestroyed()){
-                bTarget=*p; break;
+                if ((*p)->getName()=="BridgeOfHesitation"){
+                    if ((*p)->getHP()){
+                        bTarget=*p;
+                        break;
+                    }else continue;
+                }else{
+                    bTarget=*p;
+                    break;
             }
         }
         for (Character** p=strawHats; p!=strawHats+7;++p){
@@ -1405,14 +1414,14 @@ void EniesLobbyBattle::processTurn(Character* character) {
                 lStraw=*p;
             }
         }
-        lStraw->flipSLowest();
+        if (lStraw != nullptr) lStraw->flipSLowest();
         for (Character** p=cp9Agents; p!=cp9Agents+7;++p){
             if ((*p)!=nullptr && (*p)->isAlive() && (*p)->getHP()<cLowest){
                 cLowest=(*p)->getHP();
                 lCP9=*p;
             }
         }
-        lCP9->flipCLowest();
+        if (lCP9 != nullptr) lCP9->flipCLowest();
         if (character->getName()=="Chopper"){
             int heal{0};
             if (lStraw!=nullptr) {heal=character->specialSkill(lStraw, context);}
@@ -1428,16 +1437,13 @@ void EniesLobbyBattle::processTurn(Character* character) {
             }
             character->endTurn(context);
         }else if (character->getName()=="Fukurou"){
-            int damage=character->specialSkill(sTarget,context);
-            if (damage){
-                if (lStraw!=nullptr && sTarget->getName()==lStraw->getName()){
-                    sTarget->receiveDamage(20);
+            if (sTarget!=nullptr){  
+                int damage=character->specialSkill(sTarget,context);
+                if (!damage){
+                    character->attack(sTarget,context);
                 }
-            
-            }else if (!damage){
-                character->attack(sTarget,context);
+                character->endTurn(context);
             }
-            character->endTurn(context);
         }else if (character->isStrawHat()){
             if (bTarget!=nullptr){
                 int damage=character->specialSkill(bTarget,context);
@@ -1467,14 +1473,17 @@ void EniesLobbyBattle::processTurn(Character* character) {
             }
             character->endTurn(context);
         }
-        lStraw->flipSLowest();
-        lCP9->flipCLowest();
+        if (lStraw!=nullptr) lStraw->flipSLowest();
+        if (lCP9!=nullptr) lCP9->flipCLowest();
         return;
+        }
 }
 void EniesLobbyBattle::processBuildings() {
     // TODO: implement
     for (Building** p=buildings; p!=buildings+5;++p){
-        (*p)->applyEffect(context);
+        if ((*p)!=nullptr && !(*p)->isDestroyed()){
+            (*p)->applyEffect(context);
+        }
     }
 }
 
