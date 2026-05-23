@@ -3,6 +3,8 @@
 
 #include "main.h"
 
+int clamp(int value, int minVal, int maxVal);
+
 class BattleContext;
 class Building;
 class Character;
